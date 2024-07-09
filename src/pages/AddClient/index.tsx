@@ -2,17 +2,28 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { createClientThunk } from "../../store/clientsReducer";
 import { Client } from "../../types";
 import { useAppDispatch } from "../../hooks/useCustomHook";
-import { TextField, Button, Container, Typography } from "@mui/material";
+import { TextField } from "@mui/material";
+import { FaArrowLeft } from "react-icons/fa";
+import {
+  StyledContainer,
+  StyledForm,
+  GridItem,
+  Title,
+  BackLink,
+} from "./style";
+import Button from "../../components/Button";
 
 const schema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  cpf: z.string().length(11, "CPF must be exactly 11 digits"),
+  name: z.string().min(1, "Nome é obrigatório"),
+  email: z.string().email("Endereço de e-mail inválido"),
+  phone: z
+    .string()
+    .min(10, "O número de telefone deve ter pelo menos 10 dígitos"),
+  cpf: z.string().length(11, "O CPF deve ter exatamente 11 dígitos"),
 });
 
 const AddClient: React.FC = () => {
@@ -33,48 +44,57 @@ const AddClient: React.FC = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Add Client
-      </Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+    <StyledContainer>
+      <BackLink to="/">
+        <FaArrowLeft />
+      </BackLink>
+      <Title variant="h4" gutterBottom>
+        Adicionar Cliente
+      </Title>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        <GridItem>
           <TextField
-            label="Name"
+            label="Nome"
             {...register("name")}
             error={!!errors.name}
             helperText={errors.name ? errors.name.message : ""}
+            fullWidth
           />
-        </div>
-        <div>
+        </GridItem>
+        <GridItem>
           <TextField
             label="Email"
             {...register("email")}
             error={!!errors.email}
             helperText={errors.email ? errors.email.message : ""}
+            fullWidth
           />
-        </div>
-        <div>
+        </GridItem>
+        <GridItem>
           <TextField
-            label="Phone"
+            label="Telefone"
             {...register("phone")}
             error={!!errors.phone}
             helperText={errors.phone ? errors.phone.message : ""}
+            fullWidth
           />
-        </div>
-        <div>
+        </GridItem>
+        <GridItem>
           <TextField
             label="CPF"
             {...register("cpf")}
             error={!!errors.cpf}
             helperText={errors.cpf ? errors.cpf.message : ""}
+            fullWidth
           />
-        </div>
-        <Button type="submit" variant="contained" color="primary">
-          Add Client
-        </Button>
-      </form>
-    </Container>
+        </GridItem>
+        <GridItem style={{ gridColumn: "span 2" }}>
+          <Button type="submit" variant="contained" fullWidth>
+            Adicionar Cliente
+          </Button>
+        </GridItem>
+      </StyledForm>
+    </StyledContainer>
   );
 };
 

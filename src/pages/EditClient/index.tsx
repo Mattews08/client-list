@@ -6,7 +6,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getClientThunk, updateClientThunk } from "../../store/clientsReducer";
 import { Client } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../hooks/useCustomHook";
-import { TextField, Button, Container, Typography } from "@mui/material";
+import { TextField } from "@mui/material";
+import { StyledContainer, StyledForm, GridItem, Title } from "./style";
+import Button from "../../components/Button";
+import { BackLink } from "../AddClient/style";
+import { FaArrowLeft } from "react-icons/fa";
 
 const schema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -55,48 +59,57 @@ const EditClient: React.FC = () => {
   if (error) return <div>Erro ao buscar cliente</div>;
 
   return (
-    <Container>
-      <Typography variant="h4" component="h1" gutterBottom>
+    <StyledContainer>
+      <BackLink to="/">
+        <FaArrowLeft />
+      </BackLink>
+      <Title variant="h4" gutterBottom>
         Editar Cliente
-      </Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+      </Title>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        <GridItem>
           <TextField
             label="Nome"
             {...register("name")}
             error={!!errors.name}
             helperText={errors.name ? errors.name.message : ""}
+            fullWidth
           />
-        </div>
-        <div>
+        </GridItem>
+        <GridItem>
           <TextField
             label="Email"
             {...register("email")}
             error={!!errors.email}
             helperText={errors.email ? errors.email.message : ""}
+            fullWidth
           />
-        </div>
-        <div>
+        </GridItem>
+        <GridItem>
           <TextField
             label="Telefone"
             {...register("phone")}
             error={!!errors.phone}
             helperText={errors.phone ? errors.phone.message : ""}
+            fullWidth
           />
-        </div>
-        <div>
+        </GridItem>
+        <GridItem>
           <TextField
             label="CPF"
             {...register("cpf")}
             error={!!errors.cpf}
             helperText={errors.cpf ? errors.cpf.message : ""}
+            fullWidth
           />
-        </div>
-        <Button type="submit" variant="contained" color="primary">
-          Atualizar Cliente
-        </Button>
-      </form>
-    </Container>
+        </GridItem>
+        <GridItem style={{ gridColumn: "span 2" }}>
+          <Button type="submit" variant="contained" fullWidth>
+            Atualizar Cliente
+          </Button>
+        </GridItem>
+      </StyledForm>
+    </StyledContainer>
   );
 };
 
